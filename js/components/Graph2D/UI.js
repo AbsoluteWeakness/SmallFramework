@@ -3,10 +3,8 @@ class UI extends Component {
         function UI({ addFunction, delFunction, setColor, startIntegral, endIntegral, setIntegral, setTangent, inputZeros }) {
             let num = 0;
             document.getElementById('addFunction').addEventListener('click', addClickHandler);
-
             function addClickHandler() {
-                // const pointInput = document.createElement('input');
-                // pointInput.setAttribute('type', 'checkbox');
+                
 
                 const input = document.createElement('input');
                 input.setAttribute('placeholder', 'функция №' + num);
@@ -61,7 +59,6 @@ class UI extends Component {
                     funcInputs.removeChild(input);
                     funcInputs.removeChild(inputColor);
                     funcInputs.removeChild(buttonDel);
-                    // funcInputs.removeChild(pointInput);
                     funcInputs.removeChild(zerosLable);
                     funcInputs.removeChild(inputZeros);
                     funcInputs.removeChild(startIntegral);
@@ -76,7 +73,6 @@ class UI extends Component {
                 funcInputs.appendChild(input);
                 funcInputs.appendChild(inputColor);
                 funcInputs.appendChild(buttonDel);
-                // funcInputs.appendChild(pointInput);
                 funcInputs.appendChild(inputZeros);
                 funcInputs.appendChild(zerosLable);
                 funcInputs.appendChild(startIntegral);

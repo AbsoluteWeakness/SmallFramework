@@ -24,12 +24,6 @@ function Graph({ id, width = 300, height = 300, WIN, callbacks = {} }){
         return (WIN.HEIGHT-(y-WIN.BOTTOM))/WIN.HEIGHT*canvas.height;
     }
 
-    function findDerivative(f, xs) {
-        let h = 0.0001;
-        let derivative = (func(xs + h) - func(xs - h)) / (2 * h);
-        return console.log(derivative);
-    }
-
     this.sx = x => x*WIN.WIDTH/canvas.width;
     this.sy = y => -y*WIN.HEIGHT/canvas.height;
 
@@ -48,7 +42,7 @@ function Graph({ id, width = 300, height = 300, WIN, callbacks = {} }){
         context.closePath();
     }
 
-    this.point = function(x,y,color = '#f00',size = 5){
+    this.point = function(x,y,color = '#f00',size = 2){
         context.beginPath();
         context.strokeStyle = color;
         context.arc(xs(x),ys(y),size, 0, PI2);

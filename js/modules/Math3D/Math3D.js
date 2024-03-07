@@ -71,7 +71,7 @@ class Math3D {
         const T = [
             [Math.cos(alpha), 0, -Math.sin(alpha), 0],
             [0, 1, 0, 0],
-            [0, 0, Math.cos(alpha), 0],
+            [Math.sin(alpha), 0, Math.cos(alpha), 0],
             [0, 0, 0, 1]
         ];
         const array = this.multMatrix(T, [point.x, point.y, point.z, 1]);
@@ -93,4 +93,22 @@ class Math3D {
         point.z = array[2];
     }
 
+    calcDistance(surface, endPoint, name) {
+        surface.polygons.forEach(polygon => {
+            let x = 0, y = 0, z = 0;
+            polygon.points.forEach(index => {
+                x += surface.points[index].x;
+                y += surface.points[index].y;
+                z += surface.points[index].z;
+            });
+            x /= polygon.points.length;
+            y /= polygon.points.length;
+            z /= polygon.points.length;
+            polygon[name] = Math.sqrt((endPoint.x - x) ** 2 + (endPoint.y - y) ** 2 + (endPoint.z - z) ** 2);
+        });
+    }
+
+    sortByArtistAlgorithm(surface) {
+        surface.polygons.sort((a, b) => (a.distance < b.distance) ? 1 : -1);
+    }
 }

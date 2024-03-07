@@ -1,8 +1,8 @@
 Surfaces.prototype.sphere = (count = 20, r = 15) => {
     const points = [];
     const edges = [];
-    const da = Math.PI   / count ;
-    for (let phi = 0; phi < Math.PI ; phi += da) { //psi => 0 ... 2Pi //phi => 0 ... Pi
+    const da = Math.PI * 2 / count;
+    for (let phi = 0; phi < Math.PI *2 ; phi += da) { //psi => 0 ... 2Pi //phi => 0 ... Pi
         for (let psi = 0; psi < 2 * Math.PI; psi += da) {
             const x = r * Math.sin(phi) * Math.cos(psi);
             const y = r * Math.sin(phi) * Math.sin(psi);
