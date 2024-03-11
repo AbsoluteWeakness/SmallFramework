@@ -8,6 +8,7 @@ function Graph({ id, width = 300, height = 300, WIN, callbacks = {} }){
     }
     canvas.width = width;
     canvas.height = height;
+    this.canvas = canvas;
     const context = canvas.getContext('2d');
     const {wheel, mousemove, mouseleave, mouseup, mousedown} = callbacks;
     canvas.addEventListener('wheel', wheel);

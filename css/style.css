@@ -1,4 +1,7 @@
-.hide{display: none;}
+.hide {
+    display: none;
+}
+
 #canvas {
     position: fixed;
     left: 50%;
@@ -13,12 +16,10 @@
     position: absolute;
 }
 
-#a {
-    
-    margin-right: 10px;
-    border-radius: 15px;
+#a,#b,#c {
     margin-top: 1%;
     height: 150px;
+    border-radius: 15px;
     max-width: 250px;
     max-height: 150px;
     resize: none;
@@ -32,59 +33,21 @@
     line-height: 2em;
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
     transition: height 2s ease;
+}
+
+#a {
+    margin-right: 10px;
 }
 
 #b {
-  
     margin-left: 10px;
-    height: 150px;
-    border-radius: 15px;
-    max-width: 250px;
-    max-height: 150px;
-    resize: none;
-    outline: none;
-    color: #999;
-    font-weight: 100;
-    font-size: 25px;
-    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
-    width: 100%;
-    background: #fff;
-    line-height: 2em;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
-    transition: height 2s ease;
 }
 
 #c {
-   
     margin-left: 20px;
-    border-radius: 15px;
-    height: 150px;
-    max-width: 250px;
-    max-height: 150px;
-    resize: none;
-    outline: none;
-    color: #999;
-    font-weight: 100;
-    font-size: 25px;
-    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
-    width: 100%;
-    background: #fff;
-    line-height: 2em;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
-    transition: height 2s ease;
 }
 
-
-
-
-.projectName {
-    position: absolute;
-    font-size: 60px;
-    text-align: center;
-    margin-left: 35%;
-}
-
-textarea{
+textarea {
     margin-bottom: 10px;
     width: 100%;
     padding: 10px;
@@ -94,16 +57,53 @@ textarea{
     box-sizing: border-box;
     outline: none;
 }
-#calculatePolynome{
+
+#calculatePolynome,#operators,#canvas3D {
     position: absolute;
 }
 
-#operators{
-    position: absolute;
+#canvas3D {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ddd;
+    display: block;
+    margin-top: 20px;
 }
-#canvas3D{
-    position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type='checkbox'],
+input[type='color'],
+input[type='range'],
+input[type='number'] {
+    margin-bottom: 10px;
+}
+
+input[type='range'],
+input[type='number'] {
+    width: 100px;
+    vertical-align: middle;
+}
+
+#selectSurface {
+    width: 154px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.controls-container {
+    margin-top: 20px;
+}
+#interpol{
+    margin-top: 10px;
 }

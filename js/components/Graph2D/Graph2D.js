@@ -8,7 +8,7 @@ class Graph2D extends Component {
             HEIGHT: 20,
         };
         this.canMove = false;
-        this.useInterpolation = false;
+        this.useInterpolation = false
         this.points = [];
         this.funcs = [{
             f: (x) => x * x,
@@ -23,12 +23,11 @@ class Graph2D extends Component {
             addFunction: (f, num) => this.addFunction(f, num),
             delFunction: (num) => this.delFunction(num),
             setColor: (color, num) => this.setColor(color, num),
-            startIntegral: (a, num) => this.startIntegral(a, num), // Исправлено
-            endIntegral: (b, num) => this.endIntegral(b, num), // Исправлено
-            setIntegral: (integral, num) => this.setIntegral(integral, num), // Исправлено
-            inputZeros: (zeros, num) => this.inputZeros(zeros, num) // Исправлено
+            startIntegral: (a, num) => this.startIntegral(a, num), 
+            endIntegral: (b, num) => this.endIntegral(b, num),
+            setIntegral: (integral, num) => this.setIntegral(integral, num), 
+            inputZeros: (zeros, num) => this.inputZeros(zeros, num) 
         });
-
         this.graph = new Graph({
             id: 'canvas',
             width: 750,
@@ -42,7 +41,6 @@ class Graph2D extends Component {
                 mouseleave: () => this.mouseleave()
             }
         });
-
         this.render2D();
     }
 
@@ -111,7 +109,9 @@ class Graph2D extends Component {
     }
 
     mousedown(event) {
-        if (this.useInterpolation) {
+        if (this.useInterpolation) { 
+            console.log(this.graph.canvas)
+            this.canMove = false;
             const canvasRect = this.graph.canvas.getBoundingClientRect();
             const realX = this.graph.sx(event.clientX - canvasRect.left) + this.WIN.LEFT;
             const realY = this.graph.sy(event.clientY - canvasRect.top) - this.WIN.BOTTOM;
@@ -120,6 +120,7 @@ class Graph2D extends Component {
         }
         this.canMove = true;
     }
+
 
     mousemove(event) {
         if (this.canMove) {
@@ -153,15 +154,13 @@ class Graph2D extends Component {
             this.graph.line(x, f(x), x + dx, f(x + dx), color, width);
             x += dx;
         }
-    }
-
-
+    }   
     
-
-    addEventListener() {
-        document.getElementById('setInterpolation').addEventListener('change', (event) => {
-            this.useInterpolation = event.target.checked;
-            if (this.useInterpolation) {
+    
+    addEventListeners() {
+        document.getElementById('setInterpolation').addEventListener('change', (event) => { 
+            if (event.target.checked) {
+                this.useInterpolation = true;
                 const div = document.getElementById('interpol');
                 const buttons = ['Удалить точки', 'Удалить последнюю точку'];
                 buttons.forEach((buttonText, index) => {
@@ -187,9 +186,9 @@ class Graph2D extends Component {
                     div.removeChild(delOnePoint);
                 }
             }
+            
         });
     }
-
     render2D() {
         this.graph.clear();
         this.coordOs();

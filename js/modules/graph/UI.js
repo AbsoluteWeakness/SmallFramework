@@ -1,11 +1,16 @@
-function UI({ addFunction, delFunction, setColor, startIntegral, endIntegral, setIntegral, setTangent, inputZeros}) {
+// class UI extends Component{
+//     constructor(options) {
+//         super(options);
+//         callbacks: {
+//             addFunction, delFunction, setColor, startIntegral, endIntegral, setIntegral, setTangent, inputZeros
+//         }
+//     }
+// }
+function UI({ addFunction, delFunction, setColor, startIntegral, endIntegral, setIntegral, setTangent, inputZeros }) {
     let num = 0;
     document.getElementById('addFunction').addEventListener('click', addClickHandler);
 
     function addClickHandler() {
-        // const pointInput = document.createElement('input');
-        // pointInput.setAttribute('type', 'checkbox');
-
         const input = document.createElement('input');
         input.setAttribute('placeholder', 'функция №' + num);
         input.dataset.num = num;

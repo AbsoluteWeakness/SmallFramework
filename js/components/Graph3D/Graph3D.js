@@ -9,6 +9,7 @@ class Graph3D extends Component {
             CENTER: new Point(0, 0, -30),
             CAMERA: new Point(0, 0, -50),
         }
+        
         this.graph = new Graph({
             id: 'canvas3D',
             width: 600,
@@ -29,8 +30,12 @@ class Graph3D extends Component {
         this.canMove = false;
         this.drawPoints = true;
         this.drawEdges = true;
+        this.drawPolygons = true;
         this.WIN = WIN; 
-
+        this.colorPoints = 'black';
+        this.colorEdges = 'black';
+        this.sizePoints = 2;
+        this.sizeEdges = 2;
         this.renderScene();
     }
 
@@ -76,18 +81,65 @@ class Graph3D extends Component {
                 this.drawPoints = !!event.target.checked;
                 this.renderScene();
             });
+        
         document.getElementById('drawEdges')
             .addEventListener('click', (event) => {
                 this.drawEdges = !!event.target.checked;
                 this.renderScene();
             });
-    }
+        
+        document.getElementById('drawPolygons')
+            .addEventListener('click', (event) => {
+                this.drawPolygons = !!event.target.checked;
+                this.renderScene();
+            });
+        
+        document.getElementById('colorPoints').addEventListener('change', () => {
+            this.colorPoints = colorPoints.value;
+            
+            this.renderScene();
+        });
 
+        document.getElementById('colorEdges')
+            .addEventListener('change', () => {
+            this.colorEdges = colorEdges.value;
+           this.renderScene();
+        });
+
+        document.getElementById("pointsSizeRange")
+            .addEventListener('change', () => {
+                pointsSizeInput.value = pointsSizeRange.value;
+                this.sizePoints = pointsSizeRange.value;
+                this.renderScene();
+            });
+        
+        document.getElementById("pointsSizeInput")
+            .addEventListener('input', () => {
+                pointsSizeRange.value = pointsSizeInput.value;
+                this.sizePoints = pointsSizeInput.value;
+                this.renderScene();
+            });
+        
+        document.getElementById("edgesSizeRange")
+            .addEventListener('change', () => {
+                edgesSizeInput.value = edgesSizeRange.value;
+                this.sizeEdges = edgesSizeRange.value;
+                this.renderScene();
+            });
+
+        document.getElementById("edgesSizeInput")
+            .addEventListener('input', () => {
+                edgesSizeRange.value = edgesSizeInput.value;
+                this.sizeEdges = edgesSizeInput.value;
+                this.renderScene();
+            });
+    }
+    
     renderScene() {
         this.graph.clear();
         if (this.drawPoints) {
             this.scene.points.forEach(point =>
-                this.graph.point(this.math3D.xs(point), this.math3D.ys(point))
+                this.graph.point(this.math3D.xs(point), this.math3D.ys(point), this.colorPoints, this.sizePoints )
             );
         }
         if (this.drawEdges) {
@@ -96,18 +148,20 @@ class Graph3D extends Component {
                 const point2 = this.scene.points[edge.p2];
                 this.graph.line(
                     this.math3D.xs(point1), this.math3D.ys(point1),
-                    this.math3D.xs(point2), this.math3D.ys(point2)
+                    this.math3D.xs(point2), this.math3D.ys(point2),this.colorEdges, this.sizeEdges
                 );
             });
         }
-        this.math3D.calcDistance(this.scene, this.WIN.CAMERA, `distance`);
-        this.math3D.sortByArtistAlgorithm(this.scene);
-        this.scene.polygons.forEach(polygon => {
-            const points = polygon.points.map(
-                index => new Point(this.math3D.xs(this.scene.points[index],
-                    this.math3D.ys(this.scene.points[index]))));
-            this.graph.polygon(points, polygon.color);
-        });
+        if (this.drawPolygons) {
+            this.math3D.calcDistance(this.scene, this.WIN.CAMERA, `distance`);
+            this.math3D.sortByArtistAlgorithm(this.scene);
+            this.scene.polygons.forEach(polygon => {
+                const points = polygon.points.map(
+                    index => new Point(this.math3D.xs(this.scene.points[index],
+                        this.math3D.ys(this.scene.points[index]))));
+                this.graph.polygon(points, polygon.color);
+            });
+        }
     }
 
 }
