@@ -1,7 +1,7 @@
 class Graph3D extends Component {
     constructor(options) {
         super(options);
-        const WIN = {
+        this.WIN = {
             LEFT: -10,
             BOTTOM: -10,
             WIDTH: 20,
@@ -14,7 +14,7 @@ class Graph3D extends Component {
             id: 'canvas3D',
             width: 600,
             height: 600,
-            WIN,
+            WIN:this.WIN,
             callbacks: {
                 wheel: (event) => this.wheel(event),
                 mousemove: (event) => this.mousemove(event),
@@ -22,18 +22,25 @@ class Graph3D extends Component {
                 mousedown: () => this.mousedown(),
             }
         });
-        this.math3D = new Math3D({ WIN });
+        this.math3D = new Math3D({ WIN:this.WIN });
         this.surfaces = new Surfaces;
+        this.LIGHT = new Light(-40, 15, 0, 1500);
+        
         this.scene = this.surfaces.cube();
+        
         this.dx = 0;
         this.dy = 0;
+        
+
         this.canMove = false;
         this.drawPoints = true;
         this.drawEdges = true;
         this.drawPolygons = true;
-        this.WIN = WIN; 
+        
         this.colorPoints = 'black';
         this.colorEdges = 'black';
+        // this.colorPolygons;
+
         this.sizePoints = 2;
         this.sizeEdges = 2;
         this.renderScene();
@@ -104,7 +111,14 @@ class Graph3D extends Component {
             .addEventListener('change', () => {
             this.colorEdges = colorEdges.value;
            this.renderScene();
-        });
+            });
+        
+        // document.getElementById('colorPolygons')
+        //     .addEventListener('change', () => {
+        //         this.colorPolygons = colorPolygons.value;
+        //         this.graph.polygon(points, this.colorPolygons)
+        //         this.renderScene();
+        //     });
 
         document.getElementById("pointsSizeRange")
             .addEventListener('change', () => {
@@ -137,11 +151,31 @@ class Graph3D extends Component {
     
     renderScene() {
         this.graph.clear();
+        if (this.drawPolygons) {
+            this.math3D.calcDistance(this.scene, this.WIN.CAMERA, `distance`);
+            this.math3D.calcDistance(this.scene, this.LIGHT, `lumen`);
+            this.math3D.sortByArtistAlgorithm(this.scene);
+            this.scene.polygons.forEach(polygon => {
+                const points = polygon.points.map(index => new Point(
+                    this.math3D.xs(this.scene.points[index]),
+                    this.math3D.ys(this.scene.points[index]))
+                );
+                const lumen = this.math3D.calcIllumination(polygon.lumen, this.LIGHT.lumen);
+                let { r, g, b } = polygon.color;
+                r = Math.round(r * lumen);
+                g = Math.round(g * lumen);
+                b = Math.round(b * lumen);
+                this.graph.polygon(points, polygon.rgbToHex(r, g, b));
+               
+            });
+        }
+
         if (this.drawPoints) {
             this.scene.points.forEach(point =>
                 this.graph.point(this.math3D.xs(point), this.math3D.ys(point), this.colorPoints, this.sizePoints )
             );
         }
+        
         if (this.drawEdges) {
             this.scene.edges.forEach(edge => {
                 const point1 = this.scene.points[edge.p1];
@@ -152,16 +186,7 @@ class Graph3D extends Component {
                 );
             });
         }
-        if (this.drawPolygons) {
-            this.math3D.calcDistance(this.scene, this.WIN.CAMERA, `distance`);
-            this.math3D.sortByArtistAlgorithm(this.scene);
-            this.scene.polygons.forEach(polygon => {
-                const points = polygon.points.map(
-                    index => new Point(this.math3D.xs(this.scene.points[index],
-                        this.math3D.ys(this.scene.points[index]))));
-                this.graph.polygon(points, polygon.color);
-            });
-        }
+       
     }
 
 }

@@ -1,6 +1,7 @@
 Surfaces.prototype.ellipsoid = (count = 20, rX = 20, rY = 10, rZ = 6) => {
     const points = [];
     const edges = [];
+    const polygons = [];
     const da = Math.PI * 2 / count;
     for (let phi = 0; phi < Math.PI * 2; phi += da) { //psi => 0 ... Pi //phi => 0 ... 2Pi
         for (let psi = 0; psi < Math.PI * 2 ; psi += da) {
@@ -26,8 +27,18 @@ Surfaces.prototype.ellipsoid = (count = 20, rX = 20, rY = 10, rZ = 6) => {
         }
     }
 
+    for (let i = 0; i < points.length; i++) {
+        if (points[i + count + 1]) {
+            polygons.push(new Polygon([
+                i,
+                i + 1,
+                i + count + 1,
+                i + count
+            ], '#ffff00'));
+        } 
+    }
 
 
-    return new Surface(points, edges);
+    return new Surface(points, edges,polygons);
 
 }

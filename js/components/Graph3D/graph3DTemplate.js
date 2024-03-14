@@ -15,14 +15,19 @@ Template.prototype.graph3DTemplate = () => `
         <option value="sphere">Шар</option>
         <option value="ellipsoid">Эллипсоид</option>
         <option value="kleinBottle">Бутылка Клейна</option>
+        <option value='hyperbolicCylinder'>Гиперболический цилиндр</option>
+        <option value='cone'>Конус</option>
     </select>
 
     <div>
-      <label for 'colorPoints'>Цвет точек</label>
+      <label>Цвет точек</label>
       <input type='color' id='colorPoints'>
       
-      <label for 'colorEdges'>Цвет ребер</label>
+      <label>Цвет ребер</label>
       <input type='color' id='colorEdges'>
+
+      <label>Цвет полигонов</label>
+      <input type='color' id='colorPolygons'>
     </div>
 
     <div>

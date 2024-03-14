@@ -27,13 +27,12 @@ Surfaces.prototype.cube = function () {
     ];
 
     const polygons = [
-        new Polygon([0, 1, 2, 3], '#ff0000'),
-        new Polygon([4, 5, 6, 7], '#00ff00'), 
-        new Polygon([0, 1, 6, 5], '#0000ff'), 
-        new Polygon([3, 2, 7, 4], '#ffff00'), 
-        new Polygon([0, 3, 4, 5], '#ff00ff'), 
-        new Polygon([1, 2, 7, 6], '#00ffff'), 
+        new Polygon([0, 1, 2, 3]),
+        new Polygon([4, 5, 6, 7]), 
+        new Polygon([0, 1, 6, 5]), 
+        new Polygon([3, 2, 7, 4]), 
+        new Polygon([0, 3, 4, 5]), 
+        new Polygon([1, 2, 7, 6]), 
     ];
-    console.log(polygons)
     return new Surface(points, edges, polygons);
 };

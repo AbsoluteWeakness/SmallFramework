@@ -19,7 +19,7 @@ class Graph2D extends Component {
         }];
         this.ZOOM_STEP = 0.2;
 
-        new UI({
+        this.UI = new UI({
             addFunction: (f, num) => this.addFunction(f, num),
             delFunction: (num) => this.delFunction(num),
             setColor: (color, num) => this.setColor(color, num),
@@ -90,6 +90,7 @@ class Graph2D extends Component {
     }
 
     wheel(event) {
+        event.preventDefault();
         const delta = (event.wheelDelta > 0) ? this.ZOOM_STEP : -this.ZOOM_STEP;
         if (this.WIN.WIDTH + delta > 0) {
             this.WIN.WIDTH += delta;
@@ -110,7 +111,6 @@ class Graph2D extends Component {
 
     mousedown(event) {
         if (this.useInterpolation) { 
-            console.log(this.graph.canvas)
             this.canMove = false;
             const canvasRect = this.graph.canvas.getBoundingClientRect();
             const realX = this.graph.sx(event.clientX - canvasRect.left) + this.WIN.LEFT;

@@ -27,7 +27,7 @@ class App extends Component{
             template: template.graph3DTemplate,
         });
 
-        this.showPage('header')
+        this.showPage('graph3D')
     }
     
 
