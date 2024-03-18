@@ -1,53 +1,85 @@
-Surfaces.prototype.hyperbolicCylinder = (count = 20, a = 2, b = 2, c = 2) => {
+Surfaces.prototype.hyperbolicCylinder = (count = 20, a = 5, b = 3, width = 3) => {
     const points = [];
     const edges = [];
     const polygons = []
-    const da = Math.PI*2/ count;
+ 
     
-    for (let phi = -Math.PI * 2; phi < Math.PI * 2; phi += da) {
-        for (let psi = -Math.PI * 2; psi < Math.PI * 2; psi += da) {
-            const x = a * Math.cosh(phi) * Math.cos(psi);
-            const y = b * Math.sinh(phi);
-            const z = c * Math.sinh(psi);
-
-            points.push(new Point(x, y, z));
+    const dt = 2 * Math.PI / count;
+    for (let i = -Math.PI; i <= Math.PI; i += dt) {
+        for (let j = -Math.PI; j < Math.PI; j += dt) {
+            points.push(new Point(
+                b * Math.sinh(i) / 5,
+                j * width / 5,
+                a * Math.cosh(i) / 5,
+            ));
         }
     }
-
-
-    for (let i = 0; i < points.length; i++) {
-        if (points[i + 1]) {
-            if ((i + 1) % count === 0) {
-                edges.push(new Edge(i, i + 1 - count));
-            } else {
-                edges.push(new Edge(i, i + 1));
-            }
+    for (let i = -Math.PI; i <= Math.PI; i += dt) {
+        for (let j = -Math.PI; j < Math.PI; j += dt) {
+            points.push(new Point(
+                -b * Math.sinh(i) / 5,
+                j * width / 5,
+                -a * Math.cosh(i) / 5,
+            ));
         }
-        if (points[i + count]) {
-            edges.push(new Edge(i, i + count));
-        } else {
-            edges.push(new Edge(i, i % count));
-        }
-
-
     }
-
-
-    for (let i = 0; i < points.length; i++) {
-        if (points[i + count + 1]) {
-            polygons.push(new Polygon([
+    
+    for (let i = 0; i < points.length / 2 - count; i++) {
+        //вдоль
+        if (i + 1 < points.length && (i + 1) % count !== 0) {
+            edges.push(new Edge(
                 i,
-                i + 1,
-                i + count + 1,
+                i + 1
+            ));
+        } else if ((i + 1) % count === 0) {
+            edges.push(new Edge(
+                i,
+                i + 1 - count
+            ));
+        }
+        //поперек
+        if (i < points.length - count) {
+            edges.push(new Edge(
+                i,
                 i + count
-            ], '#ffff00'));
-        } else if (points[i + 1]) {
-            polygons.push(new Polygon([
+            ));
+        }
+    }
+
+    for (let i = points.length / 2 + count; i < points.length; i++) {
+        //вдоль
+        if (i + 1 < points.length && (i + 1) % count !== 0) {
+            edges.push(new Edge(
                 i,
-                i + 1,
-                (i + 1) % count,
-                i % count
-            ], '#00ff00'));
+                i + 1
+            ));
+        } else if ((i + 1) % count === 0) {
+            edges.push(new Edge(
+                i,
+                i + 1 - count
+            ));
+        }
+        //поперек
+        if (i < points.length - count) {
+            edges.push(new Edge(
+                i,
+                i + count
+            ));
+        }
+    }
+
+    for (let i = 0; i < points.length / 2 - count; i++) {
+        if (i + 1 + count < points.length && (i + 1) % count !== 0) {
+            polygons.push(new Polygon([i, i + 1, i + 1 + count, i + count]));
+        } else if (i + count < points.length && (i + 1) % count === 0) {
+            polygons.push(new Polygon([i, i + 1 - count, i + 1, i + count]))
+        }
+    }
+    for (let i = points.length / 2 + count / 2; i < points.length; i++) {
+        if (i + 1 + count < points.length && (i + 1) % count !== 0) {
+            polygons.push(new Polygon([i, i + 1, i + 1 + count, i + count]));
+        } else if (i + count < points.length && (i + 1) % count === 0) {
+            polygons.push(new Polygon([i, i + 1 - count, i + 1, i + count]))
         }
     }
 

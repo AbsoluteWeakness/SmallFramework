@@ -39,7 +39,7 @@ class Graph3D extends Component {
         
         this.colorPoints = 'black';
         this.colorEdges = 'black';
-        // this.colorPolygons;
+        this.colorPolygons;
 
         this.sizePoints = 2;
         this.sizeEdges = 2;
@@ -103,7 +103,6 @@ class Graph3D extends Component {
         
         document.getElementById('colorPoints').addEventListener('change', () => {
             this.colorPoints = colorPoints.value;
-            
             this.renderScene();
         });
 
@@ -113,12 +112,15 @@ class Graph3D extends Component {
            this.renderScene();
             });
         
-        // document.getElementById('colorPolygons')
-        //     .addEventListener('change', () => {
-        //         this.colorPolygons = colorPolygons.value;
-        //         this.graph.polygon(points, this.colorPolygons)
-        //         this.renderScene();
-        //     });
+        document.getElementById('colorPolygons')
+            .addEventListener('change', () => {
+                this.colorPolygons = colorPolygons.value;
+                this.scene.polygons.color = this.colorPolygons;
+                console.log(this.scene.polygons.color = colorPolygons.value)
+                
+                this.renderScene();
+                console.log(this.scene.polygons)
+            });
 
         document.getElementById("pointsSizeRange")
             .addEventListener('change', () => {
