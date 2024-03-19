@@ -25,8 +25,10 @@ class Graph3D extends Component {
         this.math3D = new Math3D({ WIN:this.WIN });
         this.surfaces = new Surfaces;
         this.LIGHT = new Light(-40, 15, 0, 1500);
-        
-        this.scene = this.surfaces.cube();
+        this.scene = [
+            this.surfaces.sphere({}),
+            this.surfaces.thor({})
+        ];
         
         this.dx = 0;
         this.dy = 0;
@@ -39,10 +41,10 @@ class Graph3D extends Component {
         
         this.colorPoints = 'black';
         this.colorEdges = 'black';
-        this.colorPolygons;
+        this.colorPolygons = '#ffff00';
 
-        this.sizePoints = 2;
-        this.sizeEdges = 2;
+        this.sizePoints = 1;
+        this.sizeEdges = 1;
         this.renderScene();
     }
 
@@ -57,7 +59,9 @@ class Graph3D extends Component {
     wheel(event) {
         event.preventDefault();
         const delta = (event.wheelDelta > 0) ? 0.9 : 1.1;
-        this.scene.points.forEach(point => this.math3D.zoom(point, delta));
+        this.scene.forEach(surface => {
+            surface.points.forEach(point => this.math3D.zoom(point, delta))
+        });
         this.graph.clear();
         this.renderScene();
     }
@@ -65,9 +69,11 @@ class Graph3D extends Component {
     mousemove(event) {
         if (this.canMove) {
             const gradus = Math.PI / 180 / 4;
-            this.scene.points.forEach(point => {
-                this.math3D.rotateOx(point, (this.dy - event.offsetY) * gradus);
-                this.math3D.rotateOy(point, (this.dx - event.offsetX) * gradus);
+            this.scene.forEach(surface => {
+                surface.points.forEach(point => {
+                    this.math3D.rotateOx(point, (this.dy - event.offsetY) * gradus);
+                    this.math3D.rotateOy(point, (this.dx - event.offsetX) * gradus);
+                })
             });
             this.graph.clear();
             this.renderScene();
@@ -79,27 +85,16 @@ class Graph3D extends Component {
     addEventListeners() {
         document.getElementById('selectSurface')
             .addEventListener('change', (event) => {
-                this.scene = this.surfaces[event.target.value]();
-                this.renderScene();
-            });
-
-        document.getElementById('drawPoints')
-            .addEventListener('click', (event) => {
-                this.drawPoints = !!event.target.checked;
+                this.scene = [this.surfaces[event.target.value]({color:this.colorPolygons})];
                 this.renderScene();
             });
         
-        document.getElementById('drawEdges')
-            .addEventListener('click', (event) => {
-                this.drawEdges = !!event.target.checked;
+        document.querySelectorAll('.customSurface').forEach(checkbox => {
+            checkbox.addEventListener('click', (event) => {
+                this[event.target.dataset.custom] = !!event.target.checked;
                 this.renderScene();
-            });
-        
-        document.getElementById('drawPolygons')
-            .addEventListener('click', (event) => {
-                this.drawPolygons = !!event.target.checked;
-                this.renderScene();
-            });
+            })
+        });
         
         document.getElementById('colorPoints').addEventListener('change', () => {
             this.colorPoints = colorPoints.value;
@@ -108,84 +103,97 @@ class Graph3D extends Component {
 
         document.getElementById('colorEdges')
             .addEventListener('change', () => {
-            this.colorEdges = colorEdges.value;
-           this.renderScene();
+                this.colorEdges = colorEdges.value;
+                this.renderScene();
             });
         
         document.getElementById('colorPolygons')
-            .addEventListener('change', () => {
-                this.colorPolygons = colorPolygons.value;
-                this.scene.polygons.color = this.colorPolygons;
-                console.log(this.scene.polygons.color = colorPolygons.value)
-                
-                this.renderScene();
-                console.log(this.scene.polygons)
+            .addEventListener('change', (event) => {
+                const color = event.target.value
+                return this.colorPolygons = color
             });
-
-        document.getElementById("pointsSizeRange")
-            .addEventListener('change', () => {
+        
+        document.querySelectorAll('.customSizeRange').forEach(input => {
+            input.addEventListener('change', (event) => {
                 pointsSizeInput.value = pointsSizeRange.value;
-                this.sizePoints = pointsSizeRange.value;
-                this.renderScene();
-            });
-        
-        document.getElementById("pointsSizeInput")
-            .addEventListener('input', () => {
-                pointsSizeRange.value = pointsSizeInput.value;
-                this.sizePoints = pointsSizeInput.value;
-                this.renderScene();
-            });
-        
-        document.getElementById("edgesSizeRange")
-            .addEventListener('change', () => {
                 edgesSizeInput.value = edgesSizeRange.value;
-                this.sizeEdges = edgesSizeRange.value;
+                this[event.target.dataset.custom] = event.target.value;
                 this.renderScene();
             });
+        });
 
-        document.getElementById("edgesSizeInput")
-            .addEventListener('input', () => {
+        document.querySelectorAll('.customSizeInput').forEach(input => {
+            input.addEventListener('input', (event) => {
+                pointsSizeRange.value = pointsSizeInput.value;
                 edgesSizeRange.value = edgesSizeInput.value;
-                this.sizeEdges = edgesSizeInput.value;
+                this[event.target.dataset.custom] = event.target.value;
                 this.renderScene();
             });
+        });
+        
+        document.getElementById('powerBrightnessRange').addEventListener('change', (e) => {
+            this.LIGHT.lumen = e.target.value;
+            powerBrightnessInput.value = e.target.value
+            this.renderScene();
+        });
+
+        document.getElementById('powerBrightnessInput').addEventListener('input', (e) => {
+            powerBrightnessRange.value = e.target.value;
+            this.LIGHT.lumen = e.target.value
+        });
+
     }
     
     renderScene() {
         this.graph.clear();
         if (this.drawPolygons) {
-            this.math3D.calcDistance(this.scene, this.WIN.CAMERA, `distance`);
-            this.math3D.calcDistance(this.scene, this.LIGHT, `lumen`);
-            this.math3D.sortByArtistAlgorithm(this.scene);
-            this.scene.polygons.forEach(polygon => {
-                const points = polygon.points.map(index => new Point(
-                    this.math3D.xs(this.scene.points[index]),
-                    this.math3D.ys(this.scene.points[index]))
-                );
-                const lumen = this.math3D.calcIllumination(polygon.lumen, this.LIGHT.lumen);
-                let { r, g, b } = polygon.color;
-                r = Math.round(r * lumen);
-                g = Math.round(g * lumen);
-                b = Math.round(b * lumen);
-                this.graph.polygon(points, polygon.rgbToHex(r, g, b));
-               
+            const polygons = [];
+            this.scene.forEach((surface, index) => {
+                this.math3D.calcDistance(surface, this.WIN.CAMERA, `distance`);
+                this.math3D.calcDistance(surface, this.LIGHT, `lumen`);
+                surface.polygons.forEach(polygon => {
+                    polygon.index = index
+                    polygons.push(polygon);
+                });
             });
+
+            this.math3D.sortByArtistAlgorithm(polygons);
+
+            polygons.forEach(polygon => {
+                
+                    const points = polygon.points.map(index => new Point(
+                        this.math3D.xs(this.scene[polygon.index].points[index]),
+                        this.math3D.ys(this.scene[polygon.index].points[index])
+                    )
+                    );
+                    const lumen = this.math3D.calcIllumination(polygon.lumen, this.LIGHT.lumen);
+                    let { r, g, b } = polygon.color;
+                    r = Math.round(r * lumen);
+                    g = Math.round(g * lumen);
+                    b = Math.round(b * lumen);
+                    this.graph.polygon(points, polygon.rgbToHex(r, g, b));
+
+                });
         }
 
         if (this.drawPoints) {
-            this.scene.points.forEach(point =>
-                this.graph.point(this.math3D.xs(point), this.math3D.ys(point), this.colorPoints, this.sizePoints )
-            );
+            this.scene.forEach(surface => {
+                surface.points.forEach(point =>
+                    this.graph.point(this.math3D.xs(point), this.math3D.ys(point), this.colorPoints, this.sizePoints)
+                )
+            });
         }
         
         if (this.drawEdges) {
-            this.scene.edges.forEach(edge => {
-                const point1 = this.scene.points[edge.p1];
-                const point2 = this.scene.points[edge.p2];
-                this.graph.line(
-                    this.math3D.xs(point1), this.math3D.ys(point1),
-                    this.math3D.xs(point2), this.math3D.ys(point2),this.colorEdges, this.sizeEdges
-                );
+            this.scene.forEach(surface => {
+                surface.edges.forEach(edge => {
+                    const point1 = surface.points[edge.p1];
+                    const point2 = surface.points[edge.p2];
+                    this.graph.line(
+                        this.math3D.xs(point1), this.math3D.ys(point1),
+                        this.math3D.xs(point2), this.math3D.ys(point2), this.colorEdges, this.sizeEdges
+                    );
+                })
             });
         }
        

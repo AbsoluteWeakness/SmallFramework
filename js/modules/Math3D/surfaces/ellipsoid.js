@@ -1,4 +1,4 @@
-Surfaces.prototype.ellipsoid = (count = 20, rX = 20, rY = 10, rZ = 6) => {
+Surfaces.prototype.ellipsoid = ({ count = 20, rX = 20, rY = 10, rZ = 6 }) => {
     const points = [];
     const edges = [];
     const polygons = [];

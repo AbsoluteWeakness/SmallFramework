@@ -1,4 +1,4 @@
-Surfaces.prototype.cone = (count = 20, h = 15) => {
+Surfaces.prototype.cone = ({ count = 20, h = 15 }) => {
     const points = [];
     const edges = [];
     const polygons = []

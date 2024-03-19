@@ -1,4 +1,4 @@
-Surfaces.prototype.ellipticalParaboloid = (length = 20, width = 20, p = 3, q = 4, count = 20) => {
+Surfaces.prototype.ellipticalParaboloid = ({ length = 20, width = 20, p = 3, q = 4, count = 20, color }) => {
     const points = [];
     const edges = [];
     const polygons = []

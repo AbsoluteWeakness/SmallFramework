@@ -1,13 +1,13 @@
 Template.prototype.graph3DTemplate = () => `
 <div class='controls-container'>
     <label for="drawPoints">Нарисовать точки</label>
-    <input type='checkbox' id='drawPoints' checked> 
+    <input class = 'customSurface' data-custom = 'drawPoints' type='checkbox' id='drawPoints' checked>
    
     <label for="drawEdges">Нарисовать ребра</label>
-    <input type='checkbox' id='drawEdges' checked>
+    <input class = 'customSurface' data-custom = 'drawEdges' type='checkbox' id='drawEdges' checked>
     
     <label for="drawPolygons">Нарисовать полигоны</label>
-    <input type='checkbox' id='drawPolygons' checked>
+    <input class = 'customSurface' data-custom = 'drawPolygons' type='checkbox' id='drawPolygons' checked>
 
     <select id = 'selectSurface'>
         <option value="cube">Кубик</option>
@@ -38,15 +38,22 @@ Template.prototype.graph3DTemplate = () => `
 
     <div>
      <label for="pointsSizeRange">Размер точек</label>
-     <input type="range" min="1" max="25" value="2" id="pointsSizeRange">
-     <input type="number" min="1" max="25" value="2" id="pointsSizeInput"> px
+     <input type="range" min="0" max="15" value="1"  class = 'customSizeRange' data-custom = 'sizePoints' id="pointsSizeRange">
+     <input type="number" min="0" max="15" value="1" class = 'customSizeInput' data-custom = 'sizePoints' id="pointsSizeInput"> px
     </div>
 
     <div>
      <label for="edgesSizeRange">Размер ребер</label>
-     <input type="range" min="1" max="25" value="2" id="edgesSizeRange">
-     <input type="number" min="1" max="25" value="2" id="edgesSizeInput"> px
+     <input type="range" min="0" max="10" value="1" class = 'customSizeRange' data-custom = 'sizeEdges' id="edgesSizeRange">
+     <input type="number" min="0" max="10" value="1"  class = 'customSizeInput' data-custom = 'sizeEdges' id="edgesSizeInput"> px
     </div>
+
+     <div>
+     <label>Яркость</label>
+     <input type="range" min="0" max="4000" value="1500" id="powerBrightnessRange">
+     <input type="number" min="0" max="4000" value="1500" id="powerBrightnessInput"> лм
+    </div>
+    
 </div>
     <canvas id='canvas3D'></canvas>
 `;

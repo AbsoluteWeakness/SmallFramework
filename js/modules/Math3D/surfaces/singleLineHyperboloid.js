@@ -1,4 +1,4 @@
-Surfaces.prototype.singleLineHyperboloid = (count = 20, a = 2, b = 2, c = 2, scale = 1) => {
+Surfaces.prototype.singleLineHyperboloid = ({ count = 20, a = 2, b = 2, c = 2}) => {
     const points = [];
     const edges = [];
     const polygons = []
@@ -34,11 +34,6 @@ Surfaces.prototype.singleLineHyperboloid = (count = 20, a = 2, b = 2, c = 2, sca
             } else {
                 edges.push(new Edge(i, i + 1));
             }
-        }
-        if (points[i + count]) {
-            edges.push(new Edge(i, i + count));
-        } else {
-            edges.push(new Edge(i, i % count));
         }
     }
 

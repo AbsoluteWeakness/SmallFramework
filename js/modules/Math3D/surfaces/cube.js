@@ -1,4 +1,4 @@
-Surfaces.prototype.cube = function () {
+Surfaces.prototype.cube = function ({ color = '#ff2000' }) {
     const points = [
         new Point(10, 10, 10),
         new Point(10, -10, 10),
@@ -27,12 +27,12 @@ Surfaces.prototype.cube = function () {
     ];
 
     const polygons = [
-        new Polygon([0, 1, 2, 3]),
-        new Polygon([4, 5, 6, 7]), 
-        new Polygon([0, 1, 6, 5]), 
-        new Polygon([3, 2, 7, 4]), 
-        new Polygon([0, 3, 4, 5]), 
-        new Polygon([1, 2, 7, 6]), 
+        new Polygon([0, 1, 2, 3],color),
+        new Polygon([4, 5, 6, 7],color), 
+        new Polygon([0, 1, 6, 5],color), 
+        new Polygon([3, 2, 7, 4],color), 
+        new Polygon([0, 3, 4, 5],color), 
+        new Polygon([1, 2, 7, 6],color), 
     ];
     return new Surface(points, edges, polygons);
 };

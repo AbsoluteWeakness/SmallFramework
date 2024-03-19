@@ -1,4 +1,4 @@
-Surfaces.prototype.kleinBottle = (count = 20) => {
+Surfaces.prototype.kleinBottle = ({ count = 20 }) => {
     const points = [];
     const edges = [];
     const polygons = [];

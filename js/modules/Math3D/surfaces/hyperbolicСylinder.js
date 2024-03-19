@@ -1,4 +1,4 @@
-Surfaces.prototype.hyperbolicCylinder = (count = 20, a = 5, b = 3, width = 3) => {
+Surfaces.prototype.hyperbolicCylinder = ({ count = 20, a = 5, b = 3, width = 3 }) => {
     const points = [];
     const edges = [];
     const polygons = []

@@ -1,4 +1,4 @@
-Surfaces.prototype.parabolicCylinder = (count = 18, a = 2, b = 3, c = 5) => {
+Surfaces.prototype.parabolicCylinder = ({ count = 18, a = 2, b = 3, c = 5 }) => {
     const points = [];
     const edges = [];
     const polygons = []
