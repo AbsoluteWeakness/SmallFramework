@@ -1,4 +1,4 @@
-Surfaces.prototype.cone = ({ count = 20, h = 15 }) => {
+Surfaces.prototype.cone = ({ count = 20, h = 15, color = '#ffff00'}) => {
     const points = [];
     const edges = [];
     const polygons = []
@@ -34,7 +34,7 @@ Surfaces.prototype.cone = ({ count = 20, h = 15 }) => {
                 i + 1,
                 i + count + 1,
                 i + count
-            ], '#ffff00'));
+            ], color));
         } 
     }
 

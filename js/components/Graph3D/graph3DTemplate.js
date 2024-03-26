@@ -26,32 +26,32 @@ Template.prototype.graph3DTemplate = () => `
     </select>
 
     <div>
-      <label>Цвет точек</label>
-      <input type='color' id='colorPoints'>
+      <label for = 'colorPoints'> Цвет точек</label>
+      <input type='color' id = 'colorPoints'>
       
-      <label>Цвет ребер</label>
-      <input type='color' id='colorEdges'>
+      <label for = 'colorEdges'> Цвет ребер</label>
+      <input type='color' id = 'colorEdges'>
 
-      <label>Цвет полигонов</label>
-      <input type='color' id='colorPolygons'>
+      <label for = 'colorPolygons'>Цвет полигонов</label>
+      <input type = 'color' id = 'colorPolygons'>
     </div>
 
     <div>
      <label for="pointsSizeRange">Размер точек</label>
-     <input type="range" min="0" max="15" value="1"  class = 'customSizeRange' data-custom = 'sizePoints' id="pointsSizeRange">
-     <input type="number" min="0" max="15" value="1" class = 'customSizeInput' data-custom = 'sizePoints' id="pointsSizeInput"> px
+     <input type="range" min="1" max="15" value="1"  class = 'customSizeRange' data-custom = 'sizePoints' id="pointsSizeRange">
+     <input type="number" min="1" max="15" value="1" class = 'customSizeInput' data-custom = 'sizePoints' id="pointsSizeInput"> px
     </div>
 
     <div>
-     <label for="edgesSizeRange">Размер ребер</label>
-     <input type="range" min="0" max="10" value="1" class = 'customSizeRange' data-custom = 'sizeEdges' id="edgesSizeRange">
-     <input type="number" min="0" max="10" value="1"  class = 'customSizeInput' data-custom = 'sizeEdges' id="edgesSizeInput"> px
+     <label for='edgesSizeRange'>Размер ребер</label>
+     <input type="range" min="1" max="10" value="1" class = 'customSizeRange' data-custom = 'sizeEdges' id="edgesSizeRange">
+     <input type="number" min="1" max="10" value="1"  class = 'customSizeInput' data-custom = 'sizeEdges' id="edgesSizeInput"> px
     </div>
 
      <div>
-     <label>Яркость</label>
-     <input type="range" min="0" max="4000" value="1500" id="powerBrightnessRange">
-     <input type="number" min="0" max="4000" value="1500" id="powerBrightnessInput"> лм
+     <label for = 'powerBrightnessRange'>Яркость</label>
+     <input type="range" min="1" max="4000" value="1500" id="powerBrightnessRange">
+     <input type="number" min="1" max="4000" value="1500" id="powerBrightnessInput"> лм
     </div>
     
 </div>

@@ -1,5 +1,4 @@
 class Component{
-
     constructor({ id, parent, template, templateParams = null, callbacks = {}, className }) {
         this.id = id;
         this.parent = parent;

@@ -1,4 +1,4 @@
-Surfaces.prototype.thor = ({ count = 20, R = 10, r = 5, color = '#ff2000' }) => {
+Surfaces.prototype.thor = ({ count = 20, R = 10, r = 5, color = '#ffff00' }) => {
     const points = [];
     const edges = [];
     const polygons = []

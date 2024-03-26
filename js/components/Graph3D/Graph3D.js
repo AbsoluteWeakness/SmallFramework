@@ -25,11 +25,18 @@ class Graph3D extends Component {
         this.math3D = new Math3D({ WIN:this.WIN });
         this.surfaces = new Surfaces;
         this.LIGHT = new Light(-40, 15, 0, 1500);
-        this.scene = [
-            this.surfaces.sphere({}),
-            this.surfaces.thor({})
-        ];
         
+        // this.scene = [
+        //     this.surfaces.hyperbolicCylinder({}),
+        //     this.surfaces.thor({}),
+        // ];
+        this.scene = this.SolarSystem();
+
+        setInterval(() => {
+            this.scene.forEach(surface => surface.doAnimation(this.math3D));
+            this.renderScene();
+        }, 50);
+
         this.dx = 0;
         this.dy = 0;
         
@@ -41,10 +48,11 @@ class Graph3D extends Component {
         
         this.colorPoints = 'black';
         this.colorEdges = 'black';
-        this.colorPolygons = '#ffff00';
+        this.colorPolygons = {r:255,g:255,b:0};
 
         this.sizePoints = 1;
         this.sizeEdges = 1;
+        
         this.renderScene();
     }
 
@@ -59,20 +67,22 @@ class Graph3D extends Component {
     wheel(event) {
         event.preventDefault();
         const delta = (event.wheelDelta > 0) ? 0.9 : 1.1;
-        this.scene.forEach(surface => {
-            surface.points.forEach(point => this.math3D.zoom(point, delta))
-        });
+        const matrix = this.math3D.zoom(delta)
+        this.scene.forEach(surface => 
+            surface.points.forEach(point => this.math3D.transform(matrix, point)));
         this.graph.clear();
         this.renderScene();
     }
 
     mousemove(event) {
         if (this.canMove) {
-            const gradus = Math.PI / 180 / 4;
+            const alpha = Math.PI / 180 / 4;
+            const matrix1 = this.math3D.rotateOx((this.dy - event.offsetY) * alpha);
+            const matrix2 = this.math3D.rotateOy((this.dx - event.offsetX) * alpha);
             this.scene.forEach(surface => {
                 surface.points.forEach(point => {
-                    this.math3D.rotateOx(point, (this.dy - event.offsetY) * gradus);
-                    this.math3D.rotateOy(point, (this.dx - event.offsetX) * gradus);
+                    this.math3D.transform(matrix1, point);
+                    this.math3D.transform(matrix2, point);
                 })
             });
             this.graph.clear();
@@ -80,12 +90,13 @@ class Graph3D extends Component {
         }
         this.dx = event.offsetX;
         this.dy = event.offsetY;
+
     }
 
     addEventListeners() {
         document.getElementById('selectSurface')
             .addEventListener('change', (event) => {
-                this.scene = [this.surfaces[event.target.value]({color:this.colorPolygons})];
+                this.scene = [this.surfaces[event.target.value]({})];
                 this.renderScene();
             });
         
@@ -96,21 +107,23 @@ class Graph3D extends Component {
             })
         });
         
-        document.getElementById('colorPoints').addEventListener('change', () => {
-            this.colorPoints = colorPoints.value;
+        document.getElementById('colorPoints').addEventListener('change', (e) => {
+            this.colorPoints = e.target.value;
             this.renderScene();
         });
 
-        document.getElementById('colorEdges')
-            .addEventListener('change', () => {
-                this.colorEdges = colorEdges.value;
+        document.getElementById('colorEdges').addEventListener('change', (e) => {
+                this.colorEdges = e.target.value;
                 this.renderScene();
             });
         
-        document.getElementById('colorPolygons')
-            .addEventListener('change', (event) => {
-                const color = event.target.value
-                return this.colorPolygons = color
+        document.getElementById('colorPolygons').addEventListener('change', (e) => {
+            const r = parseInt(e.target.value.substring(1, 3), 16);
+            const g = parseInt(e.target.value.substring(3, 5), 16);
+            const b = parseInt(e.target.value.substring(5, 7), 16);
+            const rgb = { r, g, b };
+            this.colorPolygons = rgb
+            this.renderScene();
             });
         
         document.querySelectorAll('.customSizeRange').forEach(input => {
@@ -124,10 +137,12 @@ class Graph3D extends Component {
 
         document.querySelectorAll('.customSizeInput').forEach(input => {
             input.addEventListener('input', (event) => {
-                pointsSizeRange.value = pointsSizeInput.value;
-                edgesSizeRange.value = edgesSizeInput.value;
-                this[event.target.dataset.custom] = event.target.value;
-                this.renderScene();
+                if (event.target.value > 0) {
+                    pointsSizeRange.value = pointsSizeInput.value;
+                    edgesSizeRange.value = edgesSizeInput.value;
+                    this[event.target.dataset.custom] = event.target.value;
+                    this.renderScene();
+                }
             });
         });
         
@@ -143,7 +158,15 @@ class Graph3D extends Component {
         });
 
     }
-    
+    SolarSystem() {
+        const Earth = this.surfaces.sphere({});
+        Earth.addAnimation('rotateOy', 0.1);
+        const Moon = this.surfaces.cube({});
+        Moon.addAnimation('rotateOx', 0.2);
+        Moon.addAnimation('rotateOz', 0.05);
+        return [Earth, Moon];
+    }
+
     renderScene() {
         this.graph.clear();
         if (this.drawPolygons) {
@@ -160,14 +183,14 @@ class Graph3D extends Component {
             this.math3D.sortByArtistAlgorithm(polygons);
 
             polygons.forEach(polygon => {
-                
+                polygon.color = this.colorPolygons;
                     const points = polygon.points.map(index => new Point(
                         this.math3D.xs(this.scene[polygon.index].points[index]),
                         this.math3D.ys(this.scene[polygon.index].points[index])
                     )
                     );
-                    const lumen = this.math3D.calcIllumination(polygon.lumen, this.LIGHT.lumen);
-                    let { r, g, b } = polygon.color;
+                const lumen = this.math3D.calcIllumination(polygon.lumen, this.LIGHT.lumen);
+                let { r, g, b } = polygon.color
                     r = Math.round(r * lumen);
                     g = Math.round(g * lumen);
                     b = Math.round(b * lumen);

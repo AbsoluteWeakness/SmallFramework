@@ -1,5 +1,5 @@
 class Polygon{
-    constructor(points = [], color = '#ffff00') {
+    constructor(points = [], color = '#000000') {
         this.points = points; // ссылки на номера точек поверхности 
         this.color = this.hexToRgb(color);
         this.distance = 0;

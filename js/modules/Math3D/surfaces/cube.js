@@ -1,4 +1,4 @@
-Surfaces.prototype.cube = function ({ color = '#ff2000' }) {
+Surfaces.prototype.cube = function ({ color = '#ffff00' }) {
     const points = [
         new Point(10, 10, 10),
         new Point(10, -10, 10),

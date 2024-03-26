@@ -46,27 +46,19 @@ Surfaces.prototype.hyperbolicCylinder = ({ count = 20, a = 5, b = 3, width = 3 }
         }
     }
 
-    for (let i = points.length / 2 + count; i < points.length; i++) {
-        //вдоль
-        if (i + 1 < points.length && (i + 1) % count !== 0) {
-            edges.push(new Edge(
-                i,
-                i + 1
-            ));
-        } else if ((i + 1) % count === 0) {
-            edges.push(new Edge(
-                i,
-                i + 1 - count
-            ));
+    for (let i = points.length / 2; i < points.length; i++) {
+        if (points[i + 1]) {
+            if ((i + 1) % count === 0) {
+                edges.push(new Edge(i, i + 1 - count));
+            } else {
+                edges.push(new Edge(i, i + 1));
+            }
         }
-        //поперек
-        if (i < points.length - count) {
-            edges.push(new Edge(
-                i,
-                i + count
-            ));
+        if (points[i + count]) {
+            edges.push(new Edge(i, i + count));
         }
     }
+
 
     for (let i = 0; i < points.length / 2 - count; i++) {
         if (i + 1 + count < points.length && (i + 1) % count !== 0) {

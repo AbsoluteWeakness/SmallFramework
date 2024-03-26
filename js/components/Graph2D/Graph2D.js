@@ -155,6 +155,19 @@ class Graph2D extends Component {
             x += dx;
         }
     }   
+    printIntegral(f, a, b) {
+        if (a != b) {
+            const dx = (b - a) / 100;
+            let x = a;
+            const points = [{ x, y: 0 }];
+            while (x <= b) {
+                points.push({ x, y: f(x) });
+                x += dx;
+            }
+            points.push({ x: b, y: 0 });
+            this.graph.polygon(points);
+        }
+    }
     
     
     addEventListeners() {
