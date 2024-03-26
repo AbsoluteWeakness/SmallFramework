@@ -35,6 +35,7 @@ Surfaces.prototype.singleLineHyperboloid = ({ count = 20, a = 2, b = 2, c = 2}) 
                 edges.push(new Edge(i, i + 1));
             }
         }
+        
     }
 
     for (let i = 0; i < points.length; i++) {

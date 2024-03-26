@@ -2,6 +2,7 @@ class Math3D {
     constructor({ WIN }) {
         this.WIN = WIN;
     }
+
     xs(point) {
         const zs = this.WIN.CENTER.z;
         const z0 = this.WIN.CAMERA.z;
@@ -18,14 +19,31 @@ class Math3D {
 
     multPoint(T, m) {
         const a = [0, 0, 0, 0];
-        for (let i = 0; i < T.length; i++){
+        for (let i = 0; i < T.length; i++) {
             let b = 0;
-            for (let j = 0; j < m.length; j++){
+            for (let j = 0; j < m.length; j++) {
                 b += T[j][i] * m[j];
             }
             a[i] = b;
         }
         return a;
+    }
+
+    multMatrix(a, b) {
+        let c = [
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ];
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                for (let k = 0; k < 4; k++) {
+                    c[i][j] += a[i][k] * b[k][j];
+                }
+            }
+        }
+        return c;
     }
 
     zoom(delta) {
@@ -89,28 +107,13 @@ class Math3D {
     }
 
     sortByArtistAlgorithm(polygons) {
-        polygons.sort((a, b) => (a.distance < b.distance) ? 1 : -1);
+        polygons.sort((a, b) => b.distance - a.distance);
     }
 
-    calcIllumination(distance,lumen) {
+    calcIllumination(distance, lumen) {
         const illum = distance ? lumen / distance ** 2 : 1;
         return illum > 1 ? 1 : illum;
     }
-
-    multMatrix(a,b) {
-        let c = []
-        for (let i = 0; i < 4; i++) {
-            c[i] = [];
-            for (let j = 0; j < 4; j++) {
-                    c[i][j] = 0;
-                    for (let k = 0; k < 4; k++){
-                        c[i][j] += a[i][k] * b[k][j] ;
-                }
-            }
-        }
-        return c;
-    }
-
 
     transform(matrix, point) {
         const result = this.multPoint(matrix, [point.x, point.y, point.z, 1]);
@@ -128,5 +131,4 @@ class Math3D {
             [0, 0, 0, 1]]
         );
     }
-
 }

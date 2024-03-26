@@ -64,7 +64,7 @@ textarea {
 
 #canvas3D {
     border: 1px solid #ddd;
-    
+    margin-top: 20px;
 }
 
 body {
@@ -96,6 +96,8 @@ input[type='number'] {
     width: 154px;
     margin-bottom: 10px;
     display: block;
+    margin-top: 30px;
+    margin-bottom: -23px;
 }
 
 .controls-container {
@@ -104,4 +106,14 @@ input[type='number'] {
 }
 #interpol{
     margin-top: 10px;
+}
+#FPS{
+    padding-right: 10px;
+    position:relative;
+}
+.result{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
 }

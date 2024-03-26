@@ -1,4 +1,4 @@
-Surfaces.prototype.hyperbolicCylinder = ({ count = 20, a = 5, b = 3, width = 3 }) => {
+Surfaces.prototype.hyperbolicCylinder = ({ count = 20, a = 5, b = 3, width = 3, color = '#ffff00' }) => {
     const points = [];
     const edges = [];
     const polygons = []
@@ -62,16 +62,16 @@ Surfaces.prototype.hyperbolicCylinder = ({ count = 20, a = 5, b = 3, width = 3 }
 
     for (let i = 0; i < points.length / 2 - count; i++) {
         if (i + 1 + count < points.length && (i + 1) % count !== 0) {
-            polygons.push(new Polygon([i, i + 1, i + 1 + count, i + count]));
+            polygons.push(new Polygon([i, i + 1, i + 1 + count, i + count],color));
         } else if (i + count < points.length && (i + 1) % count === 0) {
-            polygons.push(new Polygon([i, i + 1 - count, i + 1, i + count]))
+            polygons.push(new Polygon([i, i + 1 - count, i + 1, i + count],color))
         }
     }
     for (let i = points.length / 2 + count / 2; i < points.length; i++) {
         if (i + 1 + count < points.length && (i + 1) % count !== 0) {
-            polygons.push(new Polygon([i, i + 1, i + 1 + count, i + count]));
+            polygons.push(new Polygon([i, i + 1, i + 1 + count, i + count],color));
         } else if (i + count < points.length && (i + 1) % count === 0) {
-            polygons.push(new Polygon([i, i + 1 - count, i + 1, i + count]))
+            polygons.push(new Polygon([i, i + 1 - count, i + 1, i + count],color))
         }
     }
 

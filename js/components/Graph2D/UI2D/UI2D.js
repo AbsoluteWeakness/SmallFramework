@@ -1,5 +1,16 @@
-class UI {
-    constructor({ addFunction, delFunction, setColor, startIntegral, endIntegral, setIntegral, inputZeros }) {
+class UI2D extends Component {
+    constructor(options) {
+        super(options);
+        const {
+            addFunction,
+            delFunction,
+            setColor,
+            startIntegral,
+            endIntegral,
+            setIntegral,
+            inputZeros
+        } = options.callbacks;
+
         this.num = 0;
         this.addFunction = addFunction;
         this.delFunction = delFunction;
@@ -8,8 +19,11 @@ class UI {
         this.endIntegral = endIntegral;
         this.setIntegral = setIntegral;
         this.inputZeros = inputZeros;
+    }
 
-        document.getElementById('addFunction').addEventListener('click', this.addClickHandler.bind(this));
+    addEventListeners() {
+        document.getElementById('addFunction')
+            .addEventListener('click', this.addClickHandler.bind(this));
     }
 
     addClickHandler() {
@@ -24,7 +38,7 @@ class UI {
         inputColor.addEventListener('keyup', this.setColorHandler);
 
         const integralLabel = document.createElement('label');
-        integralLabel.setAttribute('for', 'inputIntegral'+this.num)
+        integralLabel.setAttribute('for', 'inputIntegral' + this.num)
         integralLabel.innerHTML = 'Отобразить интеграл';
 
         const zerosLabel = document.createElement('label');
@@ -33,7 +47,7 @@ class UI {
 
         const inputZerosCheckbox = document.createElement('input');
         inputZerosCheckbox.setAttribute('type', 'checkbox');
-        inputZerosCheckbox.setAttribute('id','inputZerosCheckbox'+this.num)
+        inputZerosCheckbox.setAttribute('id', 'inputZerosCheckbox' + this.num)
         inputZerosCheckbox.dataset.num = this.num;
         inputZerosCheckbox.addEventListener('change', this.inputZerosHandler);
 
@@ -49,7 +63,7 @@ class UI {
 
         const inputIntegral = document.createElement('input');
         inputIntegral.setAttribute('type', 'checkbox');
-        inputIntegral.setAttribute('id','inputIntegral'+this.num)
+        inputIntegral.setAttribute('id', 'inputIntegral' + this.num)
         inputIntegral.dataset.num = this.num;
         inputIntegral.addEventListener('change', this.inputIntegralHandler);
 
@@ -105,7 +119,7 @@ class UI {
         this.endIntegral(e.target.value - 0, e.target.dataset.num - 0);
     }
 
-    inputIntegralHandler  = (e) => {
+    inputIntegralHandler = (e) => {
         this.setIntegral(e.target.checked, e.target.dataset.num - 0);
     }
 

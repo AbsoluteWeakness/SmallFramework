@@ -1,4 +1,4 @@
-class Surface{
+class Surface {
     constructor(points = [], edges = [], polygons = [], center = new Point) {
         this.points = points;
         this.edges = edges;
@@ -11,13 +11,13 @@ class Surface{
         this.animations = [];
     }
 
-    addAnimation(method,value,center) {
+    addAnimation(method, value, center) {
         this.animations.push({
             method, value,
             center: center || this.center
         });
     }
-    
+
     doAnimation(math3D) {
         this.animations.forEach(anim => {
             const T1 = math3D.move(-anim.center.x, -anim.center.y, -anim.center.z);

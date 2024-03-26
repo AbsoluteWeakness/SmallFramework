@@ -1,13 +1,21 @@
-Surfaces.prototype.thor = ({ count = 20, R = 10, r = 5, color = '#ffff00' }) => {
+Surfaces.prototype.thor = ({
+    count = 20,
+    R = 10,
+    r = 5,
+    color = '#ffff00',
+    x0 = 0,
+    y0 = 0,
+    z0 = 0
+}) => {
     const points = [];
     const edges = [];
     const polygons = []
     const da = Math.PI * 2 / count;
     for (let phi = 0; phi < Math.PI * 2; phi += da) { //psi => -Pi ... Pi //phi => 0 ... 2Pi
         for (let psi = -Math.PI; psi < Math.PI; psi += da) {
-            const x = (R + r * Math.cos(psi)) * Math.cos(phi);
-            const y = (R + r * Math.cos(psi)) * Math.sin(phi);
-            const z = r * Math.sin(psi);
+            const x = x0 + (R + r * Math.cos(psi)) * Math.cos(phi);
+            const y = y0 + (R + r * Math.cos(psi)) * Math.sin(phi);
+            const z = z0 + r * Math.sin(psi);
             points.push(new Point(x, y, z));
         }
     }

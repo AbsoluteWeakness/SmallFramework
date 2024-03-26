@@ -1,13 +1,20 @@
-Surfaces.prototype.sphere = ({ count = 20, r = 10, color = '#ffff00' }) => {
+Surfaces.prototype.sphere = ({
+    count = 40,
+    r = 10,
+    color = '#ffff00',
+    x0 = 0,
+    y0 = 0,
+    z0 = 0,
+}) => {
     const points = [];
     const edges = [];
     const polygons = [];
     const da = Math.PI * 2 / count;
-    for (let phi = 0; phi < Math.PI *2 ; phi += da) { //psi => 0 ... 2Pi //phi => 0 ... Pi
+    for (let phi = 0; phi < Math.PI * 2; phi += da) { //psi => 0 ... 2Pi //phi => 0 ... Pi
         for (let psi = 0; psi < 2 * Math.PI; psi += da) {
-            const x = r * Math.sin(phi) * Math.cos(psi);
-            const y = r * Math.sin(phi) * Math.sin(psi);
-            const z = r * Math.cos(phi);
+            const x = x0 + r * Math.sin(phi) * Math.cos(psi);
+            const y = y0 + r * Math.sin(phi) * Math.sin(psi);
+            const z = z0 + r * Math.cos(phi);
             points.push(new Point(x, y, z));
         }
     }
@@ -35,9 +42,8 @@ Surfaces.prototype.sphere = ({ count = 20, r = 10, color = '#ffff00' }) => {
                 i + count + 1,
                 i + count
             ], color));
-        } 
+        }
     }
 
-    return new Surface(points, edges, polygons);
-
+    return new Surface(points, edges, polygons, new Point(x0, y0, z0));
 }

@@ -19,19 +19,24 @@ class Graph2D extends Component {
         }];
         this.ZOOM_STEP = 0.2;
 
-        this.UI = new UI({
-            addFunction: (f, num) => this.addFunction(f, num),
-            delFunction: (num) => this.delFunction(num),
-            setColor: (color, num) => this.setColor(color, num),
-            startIntegral: (a, num) => this.startIntegral(a, num), 
-            endIntegral: (b, num) => this.endIntegral(b, num),
-            setIntegral: (integral, num) => this.setIntegral(integral, num), 
-            inputZeros: (zeros, num) => this.inputZeros(zeros, num) 
+        new UI2D({
+            id: 'ui2D',
+            parent: this.id,
+            template: template.ui2DTemplate,
+            callbacks: {
+                addFunction: (f, num) => this.addFunction(f, num),
+                delFunction: (num) => this.delFunction(num),
+                setColor: (color, num) => this.setColor(color, num),
+                startIntegral: (a, num) => this.startIntegral(a, num),
+                endIntegral: (b, num) => this.endIntegral(b, num),
+                setIntegral: (integral, num) => this.setIntegral(integral, num),
+                inputZeros: (zeros, num) => this.inputZeros(zeros, num)
+            }
         });
         this.graph = new Graph({
             id: 'canvas',
-            width: 750,
-            height: 750,
+            width: 500,
+            height: 500,
             WIN: this.WIN,
             callbacks: {
                 wheel: (event) => this.wheel(event),
@@ -110,7 +115,7 @@ class Graph2D extends Component {
     }
 
     mousedown(event) {
-        if (this.useInterpolation) { 
+        if (this.useInterpolation) {
             this.canMove = false;
             const canvasRect = this.graph.canvas.getBoundingClientRect();
             const realX = this.graph.sx(event.clientX - canvasRect.left) + this.WIN.LEFT;
@@ -154,7 +159,7 @@ class Graph2D extends Component {
             this.graph.line(x, f(x), x + dx, f(x + dx), color, width);
             x += dx;
         }
-    }   
+    }
     printIntegral(f, a, b) {
         if (a != b) {
             const dx = (b - a) / 100;
@@ -168,10 +173,10 @@ class Graph2D extends Component {
             this.graph.polygon(points);
         }
     }
-    
-    
+
+
     addEventListeners() {
-        document.getElementById('setInterpolation').addEventListener('change', (event) => { 
+        document.getElementById('setInterpolation').addEventListener('change', (event) => {
             if (event.target.checked) {
                 this.useInterpolation = true;
                 const div = document.getElementById('interpol');
@@ -199,7 +204,7 @@ class Graph2D extends Component {
                     div.removeChild(delOnePoint);
                 }
             }
-            
+
         });
     }
     render2D() {
